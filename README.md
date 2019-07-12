@@ -5,5 +5,7 @@ This is a tool for Linux that makes it easy to register a command that is often 
 ## Install
 
 ```
-$ git clone 
+$ cd ~
+$ git clone git@github.com:gomo/tasukete.git
+$ echo '. ~/tasukete/shell.bash' >> ~/.bash_profile
 ```
