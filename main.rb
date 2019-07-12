@@ -10,11 +10,12 @@ ATTRIBUTES = {
   magenta: "\e[35m",
   cyan: "\e[36m",
   light_green: "\e[92m",
+  gray: "\e[90m",
 
-  bold: "\e[1m",
+  bold: "\e[1m"
 }
 
-def test_attr(*args)
+def ftext(*args)
   string = args.pop
   "#{args.map{|attr| ATTRIBUTES[attr] }.join}#{string}\e[0m"
 end
@@ -41,17 +42,24 @@ class Row
     @string.start_with?('#')
   end
 
+  def desc?
+    return false if @string.nil?
+
+    @string.start_with?('-')
+  end
+
   def name_length
     return 0 unless command?
 
     @name.length
   end
 
-  def display(max_length)
-    return test_attr(:yellow, :bold, @string) if title?
-    return @string unless command?
+  def display(max_length, prev_right_padding)
+    return ftext(:yellow, :bold, @string) if title?
+    return "#{ftext(:cyan, @name).rjust(max_length, ' ')} => #{@command}" if command?
+    return "#{' ' * prev_right_padding}#{ftext(:gray, @string.gsub(/\A\- */, ''))}" if desc?
 
-    "#{test_attr(:cyan, @name.rjust(max_length, ' '))} => #{@command}"
+    @string
   end
 end
 
@@ -64,29 +72,33 @@ class Main < Thor
   desc 'help', 'ヘルプを表示'
   def help
     help = <<~HELP
-      #{test_attr(:green, :bold, 'tasukete')}
-      #{test_attr(:green, '========')}
+      #{ftext(:green, :bold, 'tasukete')}
+      #{ftext(:green, '========')}
 
-      #{test_attr(:green, 'Usage:')}
+      #{ftext(:green, 'Usage:')}
         tasukete COMMAND_NAME
         _ COMMAND_NAME
 
         Executes a registered command.
 
-      #{test_attr(:green, 'Command List:')}
+      #{ftext(:green, 'Command List:')}
     HELP
 
     rows = tasukete_rows
     max_length = rows.map(&:name_length).max
+    prev_right_padding = 0
     tasukete_rows.each do |row|
-      help = "#{help}  #{row.display(max_length)}\n"
+      disp = row.display(max_length, prev_right_padding)
+
+      help = "#{help}  #{disp}\n"
+      prev_right_padding = disp[/\A */].size
     end
 
     help = <<~HELP
       #{help}
 
-      #{test_attr(:green, 'Register:')}
-        If you want to register new command, Add to #{test_attr(:red, '~/.tasukete')} file like below:
+      #{ftext(:green, 'Register:')}
+        If you want to register new command, Add to #{ftext(:red, '~/.tasukete')} file like below:
 
         hello_command => echo "hello!"
 
