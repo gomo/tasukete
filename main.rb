@@ -94,12 +94,6 @@ class Main < Thor
       #{ftext(:green, :bold, 'tasukete')}
       #{ftext(:green, '========')}
 
-      #{ftext(:green, 'Usage:')}
-        tasukete COMMAND_NAME
-        _ COMMAND_NAME
-
-        Executes a registered command.
-
       #{ftext(:green, 'Command List:')}
     HELP
 
@@ -113,13 +107,13 @@ class Main < Thor
       prev_right_padding = disp[/\A */].size
     end
 
+    help = help.chomp
+
     help = <<~HELP
       #{help}
 
-      #{ftext(:green, 'Register:')}
-        If you want to register new command, Add to #{ftext(:red, '~/.tasukete')} file like below:
-
-        hello_command => echo "hello!"
+      #{ftext(:green, 'Setting path:')}
+        #{ftext(:red, '~/.tasukete')}
 
     HELP
 
