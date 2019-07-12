@@ -13,13 +13,12 @@ ATTRIBUTES = {
   gray: "\e[90m",
 
   bold: "\e[1m"
-}
+}.freeze
 
 def ftext(*args)
   string = args.pop
-  "#{args.map{|attr| ATTRIBUTES[attr] }.join}#{string}\e[0m"
+  "#{args.map {|attr| ATTRIBUTES[attr] }.join}#{string}\e[0m"
 end
-
 
 class Row
   attr_reader :name
@@ -61,12 +60,32 @@ class Row
 
     @string
   end
+
+  def bind(*args)
+    return '' unless command?
+
+    matchies = @command.scan(/(\$\{[0-9]+\})/)
+    return @command if matchies.empty?
+
+    command = @command
+    matchies.each do |captures|
+      cap = captures.first
+      index = cap.gsub(/[${}]/, '').to_i
+      command = command.gsub(/#{Regexp.quote(cap)}/, args[index] || '')
+    end
+
+    command
+  end
 end
 
 class Main < Thor
   desc 'command NAME[, ...ARGS]', 'NAMEのコマンドを探して文字列を返します。引数は`$n`が合ったらバインド。残りはそのまま渡します。'
   def command(*args)
-    puts "echo #{args.join(' ')}"
+    name = args.shift
+    row = tasukete_rows.find {|r| r.command? && r.name == name }
+    return puts '' if row.nil?
+
+    puts row.bind(*args)
   end
 
   desc 'help', 'ヘルプを表示'
@@ -115,7 +134,7 @@ class Main < Thor
       dir = Pathname.new(File.expand_path('~'))
       return [] unless dir.join('.tasukete').exist?
 
-      dir.join('.tasukete').read.split("\n").map{|str|  Row.new(str) }
+      dir.join('.tasukete').read.split("\n").map {|str| Row.new(str) }
     end
 end
 

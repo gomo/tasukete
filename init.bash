@@ -2,14 +2,14 @@
 # cd `dirname $0`
 
 tasukete() {
-  if [ "$@" = "" ]
+  if [ "$1" = "" ]
   then
-    `bundle exec main.rb help`
-    exit 0
+    echo -e "`bundle exec main.rb help`"
+    return 0
   fi
 
   command=`bundle exec main.rb command $@`
   eval "$command"
 }
 
-alias _="tasukete"
+alias _=tasukete

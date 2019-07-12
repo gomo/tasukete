@@ -13,3 +13,15 @@ Style/Documentation:
 
 Layout/IndentationConsistency:
   EnforcedStyle: rails
+
+Layout/SpaceInsideBlockBraces:
+  SpaceBeforeBlockParameters: false
+
+Metrics/AbcSize:
+  Max: 23
+
+Metrics/MethodLength:
+  Max: 32
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
