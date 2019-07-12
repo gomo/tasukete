@@ -4,11 +4,11 @@
 tasukete() {
   if [ "$1" = "" ]
   then
-    echo -e "`bundle exec main.rb help`"
+    echo -e "`bundle exec ~/tasukete/main.rb help`"
     return 0
   fi
 
-  command=`bundle exec main.rb command $@`
+  command=`bundle exec ~/tasukete/main.rb command $@`
   eval "$command"
 }
 
