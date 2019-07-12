@@ -1,0 +1,15 @@
+AllCops:
+  TargetRubyVersion: 2.6
+
+Metrics/LineLength:
+  Max: 132
+  AllowURI: true
+  URISchemes:
+    - http
+    - https
+
+Style/Documentation:
+  Enabled: false
+
+Layout/IndentationConsistency:
+  EnforcedStyle: rails
