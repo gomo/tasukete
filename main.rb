@@ -64,13 +64,13 @@ class Row
   def bind(*args)
     return '' unless command?
 
-    matchies = @command.scan(/(\$\{[0-9]+\})/)
+    matchies = @command.scan(/(\$\{.+?\})/)
     return @command if matchies.empty?
 
     command = @command
     matchies.each do |captures|
       cap = captures.first
-      index = cap.gsub(/[${}]/, '').to_i
+      index = cap.gsub(/[^0-9]/, '').to_i
       command = command.gsub(/#{Regexp.quote(cap)}/, args[index] || '')
     end
 
