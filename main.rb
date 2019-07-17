@@ -55,7 +55,7 @@ class Row
 
   def display(max_length, prev_right_padding)
     return ftext(:yellow, :bold, @string) if title?
-    return "#{ftext(:cyan, @name).rjust(max_length, ' ')} => #{@command}" if command?
+    return "#{ftext(:cyan, @name.rjust(max_length, ' '))} => #{@command}" if command?
     return "#{' ' * prev_right_padding}#{ftext(:gray, @string.gsub(/\A\- */, ''))}" if desc?
 
     @string
