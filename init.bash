@@ -9,6 +9,11 @@ tasukete() {
   fi
 
   command=`ruby ~/tasukete/main.rb command $@`
+  if [ -z "$command" ]; then
+    echo -e "\033[0;31mMissing $1 command\033[0m"
+    return 1
+  fi
+
   eval "$command"
 }
 
