@@ -71,7 +71,7 @@ class Row
     matchies.each do |captures|
       cap = captures.first
       index = cap.gsub(/[^0-9]/, '').to_i
-      command = command.gsub(/#{Regexp.quote(cap)}/, args[index] || '')
+      command = command.gsub(/#{Regexp.quote(cap)}/, "\"#{args[index]}\"" || '')
     end
 
     command
