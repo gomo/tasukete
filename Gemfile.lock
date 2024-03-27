@@ -35,5 +35,3 @@ DEPENDENCIES
   rubocop (~> 0.68.1)
   thor (~> 0.20)
 
-BUNDLED WITH
-   1.17.3
