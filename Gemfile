@@ -8,4 +8,4 @@ git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 
 gem 'pry-byebug'
 gem 'rubocop', '~> 0.68.1'
-gem 'thor', '~> 0.20'
+gem 'thor', '~> 1.3'
